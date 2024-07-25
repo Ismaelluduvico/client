@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { QuizContext } from "./context/quiz";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
+import Home from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import Questions from "./pages/Questions";
 import GameOver from "./pages/GameOver";

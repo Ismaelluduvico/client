@@ -1,0 +1,114 @@
+
+a{
+    text-decoration: none;
+    color:white;
+    font-size: 80%;
+}
+
+a:hover{
+    color: #000000;    
+}
+.tenhoConta a{
+    text-decoration: none;
+    color:white;
+    font-size: 80%;
+}
+
+.tenhoConta a:hover{
+    color: #000000;
+}
+
+.conteiner {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    flex-direction: column;
+    justify-content: center;
+}
+.conteiner Button{
+    background: #000000;
+    
+}
+
+.conteiner label{
+    padding-top: 1em;
+    color:white;
+    
+}
+.form{
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    background-color: #0C4070;
+    width: 40%;
+    height: 80%;
+    border-radius: 20px;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bolder;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0,0,0,0.63); 
+    box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0,0,0,0.63);
+}
+
+.trocarPagina{
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 1%;
+}
+
+.tenhoConta{
+    margin-left: 0%;
+}
+
+.souProfessor{
+    margin-right: 5%;
+}
+
+.button{
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    padding-top: 1%;
+    padding-bottom: 2%;
+}
+
+.button1{
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    width: 25%;
+}
+
+.button1 Button{
+    background: rgb(167, 13, 13);
+}
+
+.button1 Button:hover{
+    background: red;
+}
+
+.button2{
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-right: 10%;
+}
+
+.button2 Button{
+    background: #036f0b;
+    width: 120%;
+}
+
+.button2 Button:hover{
+    background: #0db418;
+}
+
+.usuario1 {
+    display: block;
+    font-size: 2em;
+    padding-top: 5%;
+    font-weight: bold;
+    unicode-bidi: isolate;
+    color: #fff;
+}

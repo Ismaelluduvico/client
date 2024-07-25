@@ -1,0 +1,80 @@
+.root {
+    min-height: 100vh;
+    min-width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: #fff;
+}
+.root * {
+    color: #000;
+}
+
+h1, h2, p, a {
+    font-size: 2rem;
+    color: #000;
+    margin: 0;
+    padding: 10px;
+}
+
+.quizz {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.quizzContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5vh;
+
+}
+
+.ranking {
+    border-left: 1px solid #0C4070;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+.ranking div {
+    height: 25vh;
+    width: 100%;
+    padding-block: 10px;
+    border-top: 1px solid #0C4070;
+}
+
+.quizzItem button {
+    background: #0C4070;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 20px;
+}
+.quizzItem button:hover {
+    background: #0C4070;
+}
+.levelDescription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inicarJogo {
+    text-align: center;
+}
+
+.inicarJogo Button {
+    background: #0C4070;
+    color: #fff;
+    width: 20%;
+}
+
+.inicarJogo Button:hover{
+    background: #176cbb;
+    color: #fff;
+}

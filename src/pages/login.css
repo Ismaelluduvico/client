@@ -1,0 +1,90 @@
+.conteiner1 {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    flex-direction: column;
+    justify-content: center;
+}
+.conteiner1 Button{
+    background: #000000;
+    
+}
+
+.conteiner1 label{
+    padding-top: 1em;
+    color:white;
+    
+}
+
+.form1{
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    background-color: #0C4070;
+    width: 30%;
+    height: 60%;
+    border-radius: 20px;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bolder;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0,0,0,0.63); 
+    box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0,0,0,0.63);
+}
+
+form {
+    width: 90%;
+}
+
+.trocarPagina1{
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 4%;
+}
+
+.trocarPagina1 a{
+    text-decoration: none;
+    color:white;
+    font-size: 80%;
+    padding-left: 5%;
+}
+
+.usuario{
+    padding-left: 2%;
+    margin-top: 1%;
+    text-align: center;
+    color: #fff;
+}
+h1{
+    padding-left: 2%;
+    margin-top: 1%;
+    text-align: center;
+}
+/*style={{flexDirection:'column', justifyContent:'space-between', width:'80%', height:'40%'}}
+style={{paddingTop:'2em'}}
+*/
+
+.input {
+    width: 100%;
+}
+.form {
+    width: 100%;
+    height: 100%;
+}
+
+
+.button3{
+    padding-top: 10%; 
+    text-align: center;
+}
+
+.button3 Button{
+    background: #036f0b;
+    width: 50%;
+}
+
+.button3 Button:hover{
+    background: #259c35;
+}
+

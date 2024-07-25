@@ -7,19 +7,37 @@ import { QuizProvider } from './context/quiz';
 //1- Configurando router
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Home from './pages/Home';
+import Login from './pages/Login';
 import Game from './Game';
-import CadastroAluno from './pages/CadastroAluno';
+import CadastroUsuario from './pages/CadastroUsuario';
+import Home from './pages/Home';
+import HomeProfessor from './pages/HomeProfessor';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Login />,
   },
+  
+  {
+    path: "cadastrousuario",
+    element: <CadastroUsuario />,
+  },
+
   {
     path: "game",
     element: <Game />,
   },
+
+  {
+    path: "home",
+    element: <Home/>,
+  },
+
+  {
+    path: "homeprofessor",
+    element: <HomeProfessor/>,
+  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
