@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Api from '../axios/Api';
 import { useNavigate } from 'react-router-dom';
 import styles from './novaQuestao.module.css';
-import { Button, Notification, Textarea, RadioGroup, Select } from 'react-rainbow-components';
+import { Button, Notification, Textarea, RadioGroup, Select, Spinner } from 'react-rainbow-components';
 
 const NovaQuestao = () => {
     const navigate = useNavigate();
     const [enuciado, setEnunciado] = useState('');
     const [dificuldade, setDificuldade] = useState('');
     const [assunto, setAssunto] = useState('');
-    const [alternativas, setAlternativas] = useState([{ resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }]);
+    const [alternativas, setAlternativas] = useState([...Array(4)].map(i => ({
+        resposta: '', certoerrado: false, questaoid: null
+    })));
     const [correta, setCorreta] = useState(null);
     const [assuntos, setAssuntos] = useState([]);
+    const [loading, setLoading] = useState(false)
     const [notification, setNotification] = useState({ open: false, type: "", description: "" });
 
     useEffect(() => {
@@ -40,9 +43,10 @@ const NovaQuestao = () => {
 
         try {
             const result = await Api.post("/questao/", payload);
-            const questaoid = result.data.id; // Supondo que a API retorna o ID da nova questão
-
+            const dados = result.data; // Supondo que a API retorna o ID da nova questão 
+            const questaoid = dados[0].id;
             await criarAlternativas(questaoid);
+
             setNotification({ open: true, type: "success", description: "Questão e alternativas criadas com sucesso!" });
             navigate('/homeprofessor');
         } catch (error) {
@@ -54,8 +58,8 @@ const NovaQuestao = () => {
     const criarAlternativas = async (questaoid) => {
         const payloadAlternativas = alternativas.map((alt, index) => ({
             resposta: alt.resposta,
-            certoerrado: index === correta, // Define se é a alternativa correta
-            questaoid: alt.questaoid
+            certoerrado: alt.certoerrado, // Define se é a alternativa correta
+            questaoid: questaoid
         }));
 
         try {
@@ -78,8 +82,20 @@ const NovaQuestao = () => {
         setAlternativas(newAlternativas);
     };
 
+    const handleCorretoChange = (index) => {
+        setCorreta(parseInt(index));
+        const newAlternativas = [...alternativas];
+        newAlternativas.forEach((_alt, i) => {
+            newAlternativas[i].certoerrado = i === parseInt(index);
+        });
+        setAlternativas(newAlternativas);
+    };
+
     return (
         <div className={styles.container}>
+            <Spinner type="arc" isVisible={loading} variant="brand"
+                size="medium" style={{zIndex: 9999}}
+            />
             {notification.open &&
                 <Notification
                     title="Aviso"
@@ -88,6 +104,12 @@ const NovaQuestao = () => {
                     onRequestClose={() => setNotification({ open: false })}
                 />
             }
+            {loading && <div style={{position: "absolute",
+                 backgroundColor: "rgba(255,255,255,0.5)",
+                 minWidth: "100%",
+                minHeight: "100%",
+                 zIndex: 9998}}
+            />}
             <div className={styles.form}>
                 <h1 className={styles.titulo}>Nova Questão</h1>
                 <form onSubmit={(e) => { e.preventDefault(); criarQuestao(); }}>
@@ -136,11 +158,11 @@ const NovaQuestao = () => {
                         <RadioGroup
                             id="radio-group-component-2"
                             options={alternativas.map((_, index) => ({
-                                value: index.toString(),
+                                value: index,
                                 label: <div >Alternativa {index + 1}</div>
                             }))}
-                            value={correta}
-                            onChange={setCorreta}
+                            value={alternativas.findIndex(i => i?.certoerrado)}
+                            onChange={(e) => handleCorretoChange(e.target.value)}
                             label={<p className={styles.labelStyle}>Das alternativas acima, selecione a correta</p>}
                             orientation="horizontal"
                             style={{ marginTop: "1%", marginLeft: "10%", marginBottom: "5%" }}
