@@ -1,0 +1,68 @@
+/* homeProfessorStyles.css */
+
+.container {
+    display: flex;
+  }
+  
+  .cardStyle {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    background-color: #0C4070;
+    border-radius: 0.5rem;
+    color: white;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .cardStyle:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .iconWrapperStyle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .sidebarStyle {
+    width: 240px;
+  }
+  
+  .sidebarStyle .MuiDrawer-paper {
+    width: 240px;
+    box-sizing: border-box;
+    background-color: #1a237e;
+    color: white;
+  }
+  
+  .listItemStyle {
+    margin: 4px 0;
+    border-radius: 8px;
+  }
+  
+  .listItemStyle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .listItemStyle.active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Botões personalizados */
+  button.newprofessor, button.verprofessor, button.newaluno, button.veraluno, button.newqustao, button.verqustao {
+    background-color: darkgreen;
+    color: white;
+    width: 100%;
+  }
+  
+  button.newprofessor:hover, button.verprofessor:hover, button.newaluno:hover, button.veraluno:hover, button.newqustao:hover, button.verqustao:hover {
+    background-color: lightgreen;
+  }

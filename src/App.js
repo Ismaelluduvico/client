@@ -19,11 +19,6 @@ import"./App.css";
     return (
       <div className="App">
         <h1>Quiz de Programação</h1>
-        
-        {quizState.gameStage === "Start" && <Welcome/>}
-        {quizState.gameStage === "Playing" && <Questions/>}
-        {quizState.gameStage === "End" && <GameOver/>}
-      
       </div>
     );
   }

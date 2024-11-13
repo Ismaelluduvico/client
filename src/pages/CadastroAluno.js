@@ -6,7 +6,7 @@ import styles from './cadastroUsuario.module.css';
 import { Input, Button, Spinner, Notification} from 'react-rainbow-components';
 
 
-const CadastroUsuario = () => {
+const CadastroAluno = () => {
     const navigate = useNavigate()
 
     const [nomeusuario, setUsuario] = useState()
@@ -98,7 +98,7 @@ const CadastroUsuario = () => {
                             <Button
                                 label='CANCELAR'
                                 variant='brand'
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/homeprofessor')}
                             />
                         </div>
                         <div className={styles.button2}>
@@ -115,4 +115,4 @@ const CadastroUsuario = () => {
     )
 }
 
-export default CadastroUsuario
+export default CadastroAluno

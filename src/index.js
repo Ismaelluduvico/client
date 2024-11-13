@@ -8,8 +8,11 @@ import { QuizProvider } from './context/quiz';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Login from './pages/Login';
-import Game from './Game';
 import CadastroUsuario from './pages/CadastroUsuario';
+import CadastroProfessor from './pages/CadastroProfessor';
+import CadastroAluno from './pages/CadastroAluno';
+import CadastroAssunto from './pages/CadastroAssunto';
+import NovaQuestao from './pages/NovaQuestao';
 import Home from './pages/Home';
 import HomeProfessor from './pages/HomeProfessor';
 
@@ -25,11 +28,6 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "game",
-    element: <Game />,
-  },
-
-  {
     path: "home",
     element: <Home/>,
   },
@@ -37,13 +35,27 @@ const router = createBrowserRouter([
   {
     path: "homeprofessor",
     element: <HomeProfessor/>,
+  },
+  {
+    path: "cadastroprofessor",
+    element: <CadastroProfessor/>,
+  },
+  {
+    path: "cadastroaluno",
+    element: <CadastroAluno/>,
+  },
+  {
+    path: "cadastroassunto",
+    element: <CadastroAssunto/>,
+  },
+  {
+    path: "novaquestao",
+    element: <NovaQuestao/>,
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QuizProvider>
       <RouterProvider router={router} />
-    </QuizProvider>
   </React.StrictMode>
 );

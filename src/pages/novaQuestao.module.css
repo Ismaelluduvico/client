@@ -1,0 +1,108 @@
+h1,
+h2,
+p,
+a {
+    font-size: 2rem;
+    color: #fff;
+    margin: 0;
+    padding: 10px;
+}
+
+.titulo {
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    align-self: center;
+    background-color: #0C4070;
+    width: 60%;
+    border-radius: 20px;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bolder;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0, 0, 0, 0.63);
+    box-shadow: 0px 10px 13px -7px #000000, 0px 0px 21px 3px rgba(0, 0, 0, 0.63);
+}
+
+.container label {
+    color: #fff;
+    size: 120%;
+    display: flex;
+    align-items: center;
+}
+
+
+.enuciado {
+    display: flex;
+}
+
+.alternativa1e2 {
+    display: flex;
+}
+
+.alternativas3e4 {
+    display: flex;
+}
+
+.container RadioGroup {
+    color: #000000
+}
+
+.button {
+    justify-content: space-between;
+    display: flex;
+}
+
+.button1 {
+    margin-top: 2%;
+    margin-left: 0%;
+    width: 200%;
+}
+
+.button1 Button {
+    background: rgb(167, 13, 13);
+    width: 24%;
+}
+
+.button1 Button:hover {
+    background: red;
+}
+
+.button2 {
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-right: 12%;
+}
+
+.button2 Button {
+    background: #036f0b;
+    width: 200%;
+}
+
+.button2 Button:hover {
+    background: #0db418;
+}
+
+.labelStyle {
+    color: #fff;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.optionStyle {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}

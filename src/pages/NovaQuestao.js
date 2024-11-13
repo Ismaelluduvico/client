@@ -1,37 +1,172 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Api from '../axios/Api';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styleQuestao from './novaQuestao.css'
-import { Input, Button, Spinner, Notification } from 'react-rainbow-components';
+import styles from './novaQuestao.module.css';
+import { Button, Notification, Textarea, RadioGroup, Select } from 'react-rainbow-components';
 
 const NovaQuestao = () => {
+    const navigate = useNavigate();
+    const [enuciado, setEnunciado] = useState('');
+    const [dificuldade, setDificuldade] = useState('');
+    const [assunto, setAssunto] = useState('');
+    const [alternativas, setAlternativas] = useState([{ resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }, { resposta: '', certoerrado: false, questaoid: '' }]);
+    const [correta, setCorreta] = useState(null);
+    const [assuntos, setAssuntos] = useState([]);
+    const [notification, setNotification] = useState({ open: false, type: "", description: "" });
 
-    const navigate = useNavigate()
+    useEffect(() => {
+        const fetchAssuntos = async () => {
+            try {
+                const response = await Api.get("/topicos/");
+                setAssuntos(response.data.map(i => ({ value: i.id, label: i.titulo })));
+            } catch (err) {
+                console.error("Ops! Ocorreu um erro: " + err);
+            }
+        };
+        fetchAssuntos();
+    }, []);
 
-    const [enuciado, setEnuciado] = useState()
-    const [dificuldade, setDificuldade] = useState()
-    const [assunto, setAssunto] = useState()
-    const [auternativa1, setAuternativa1] = useState()
-    const [auternativa2, setAuternativa2] = useState()
-    const [auternativa3, setAuternativa3] = useState()
-    const [auternativa4, setAuternativa4] = useState()
-    const [certo1, setCerto1] = useState(false)
-    const [certo2, setCerto2] = useState(false)
-    const [certo3, setCerto3] = useState(false)
-    const [certo4, setCerto4] = useState(false)
-
-    const criarQuestão = async () => {
-        try {
-            
-        } catch (error) {
-            
+    const criarQuestao = async () => {
+        if (!enuciado || !dificuldade || !assunto) {
+            setNotification({ open: true, type: "error", description: "Preencha todos os campos obrigatórios!" });
+            return;
         }
-    }
+
+        const payload = {
+            topicoid: parseInt(assunto),
+            enuciado: enuciado,
+            dificuldade: dificuldade
+        };
+
+        try {
+            const result = await Api.post("/questao/", payload);
+            const questaoid = result.data.id; // Supondo que a API retorna o ID da nova questão
+
+            await criarAlternativas(questaoid);
+            setNotification({ open: true, type: "success", description: "Questão e alternativas criadas com sucesso!" });
+            navigate('/homeprofessor');
+        } catch (error) {
+            console.error("Ops! ocorreu um erro: " + error);
+            setNotification({ open: true, type: "error", description: "Erro ao criar questão." });
+        }
+    };
+
+    const criarAlternativas = async (questaoid) => {
+        const payloadAlternativas = alternativas.map((alt, index) => ({
+            resposta: alt.resposta,
+            certoerrado: index === correta, // Define se é a alternativa correta
+            questaoid: alt.questaoid
+        }));
+
+        try {
+            await Promise.all(payloadAlternativas.map(alt => Api.post("/alternativa/", alt)));
+        } catch (error) {
+            console.error("Ops! ocorreu um erro ao criar alternativas: " + error);
+            setNotification({ open: true, type: "error", description: "Erro ao criar alternativas." });
+        }
+    };
+
+    const dificuldades = [
+        { value: "Facil", label: "Fácil" },
+        { value: "Medio", label: "Médio" },
+        { value: "Dificil", label: "Difícil" },
+    ];
+
+    const handleAlternativaChange = (index, value) => {
+        const newAlternativas = [...alternativas];
+        newAlternativas[index].resposta = value;
+        setAlternativas(newAlternativas);
+    };
 
     return (
-        <div>NovaQuestao</div>
-    )
-}
+        <div className={styles.container}>
+            {notification.open &&
+                <Notification
+                    title="Aviso"
+                    description={notification.description}
+                    icon={notification.type}
+                    onRequestClose={() => setNotification({ open: false })}
+                />
+            }
+            <div className={styles.form}>
+                <h1 className={styles.titulo}>Nova Questão</h1>
+                <form onSubmit={(e) => { e.preventDefault(); criarQuestao(); }}>
+                    <Textarea
+                        labelAlignment='left'
+                        label="Enunciado"
+                        onChange={(e) => setEnunciado(e.target.value)}
+                        required
+                        rows={5}
+                        placeholder="Adicione o Enunciado da Questão"
+                        className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+                        style={{ marginBottom: "5%", width: "100%" }}
+                    />
+                    <Select
+                        labelAlignment='left'
+                        label="Adicionar Assunto"
+                        required
+                        onChange={(e) => setAssunto(e.target.value)}
+                        options={assuntos}
+                        className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+                        style={{ marginBottom: "5%", width: "100%" }}
+                    />
+                    <Select
+                        labelAlignment='left'
+                        label="Selecione a dificuldade"
+                        required
+                        options={dificuldades}
+                        onChange={(e) => setDificuldade(e.target.value)}
+                        className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+                        style={{ marginBottom: "5%", width: "100%" }}
+                    />
+                    {alternativas.map((alt, index) => (
+                        <Textarea
+                            key={index}
+                            labelAlignment='left'
+                            label={`Alternativa ${index + 1}`}
+                            required
+                            rows={3}
+                            onChange={(e) => handleAlternativaChange(index, e.target.value)}
+                            placeholder="Adicione resposta"
+                            className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
+                            style={{ marginBottom: "5%", width: "100%" }}
+                        />
+                    ))}
+                    <div className={styles.radiogroup}>
+                        <RadioGroup
+                            id="radio-group-component-2"
+                            options={alternativas.map((_, index) => ({
+                                value: index.toString(),
+                                label: <div >Alternativa {index + 1}</div>
+                            }))}
+                            value={correta}
+                            onChange={setCorreta}
+                            label={<p className={styles.labelStyle}>Das alternativas acima, selecione a correta</p>}
+                            orientation="horizontal"
+                            style={{ marginTop: "1%", marginLeft: "10%", marginBottom: "5%" }}
+                        />
+                    </div>
+                    <div className={styles.button}>
+                        <div className={styles.button1}>
+                            <Button
+                                label='CANCELAR'
+                                variant='brand'
+                                onClick={() => navigate('/homeprofessor')}
+                            />
+                        </div>
+                        <div className={styles.button2}>
+                            <Button
+                                label='CRIAR'
+                                variant='brand'
+                                type='submit'
+                                onClick={criarQuestao}
+                            />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
 
-export default NovaQuestao
+export default NovaQuestao;

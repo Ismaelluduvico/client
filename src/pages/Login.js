@@ -32,7 +32,7 @@ const Login = () => {
 
         } catch (error) {
             console.log(error)
-            setNotification({ open: true, type: "error", description: "Não foi possivel fazer login" })
+            setNotification({ open: true, type: "error", description: "Usuário ou senha incorreta" })
         } finally { setLoading(false) }
     };
 
