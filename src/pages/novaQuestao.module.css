@@ -37,7 +37,7 @@ a {
 }
 
 .container label {
-    color: #fff;
+    color: #fff !important;
     size: 120%;
     display: flex;
     align-items: center;

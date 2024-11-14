@@ -30,8 +30,15 @@ const NovaQuestao = () => {
     }, []);
 
     const criarQuestao = async () => {
+        setLoading(true)
         if (!enuciado || !dificuldade || !assunto) {
             setNotification({ open: true, type: "error", description: "Preencha todos os campos obrigatórios!" });
+            return;
+        }
+
+        if (alternativas.some(alt => alt.resposta === "")){
+            setNotification({ open: true, type: "error", description: "Preencha todos os campos obrigatórios!" });
+            setLoading(false)
             return;
         }
 
@@ -45,7 +52,12 @@ const NovaQuestao = () => {
             const result = await Api.post("/questao/", payload);
             const dados = result.data; // Supondo que a API retorna o ID da nova questão 
             const questaoid = dados[0].id;
-            await criarAlternativas(questaoid);
+            const {status} = await criarAlternativas(questaoid);
+
+            if (status === "error"){
+                setNotification({ open: true, type: "error", description: "Não foi possivel adicionar alternativas" });
+                return 
+            }
 
             setNotification({ open: true, type: "success", description: "Questão e alternativas criadas com sucesso!" });
             navigate('/homeprofessor');
@@ -56,6 +68,7 @@ const NovaQuestao = () => {
     };
 
     const criarAlternativas = async (questaoid) => {
+        
         const payloadAlternativas = alternativas.map((alt, index) => ({
             resposta: alt.resposta,
             certoerrado: alt.certoerrado, // Define se é a alternativa correta
@@ -64,6 +77,7 @@ const NovaQuestao = () => {
 
         try {
             await Promise.all(payloadAlternativas.map(alt => Api.post("/alternativa/", alt)));
+            return {status: "success"}
         } catch (error) {
             console.error("Ops! ocorreu um erro ao criar alternativas: " + error);
             setNotification({ open: true, type: "error", description: "Erro ao criar alternativas." });
@@ -71,6 +85,7 @@ const NovaQuestao = () => {
     };
 
     const dificuldades = [
+        {value: "", label: "Selecione uma dificuldade"},
         { value: "Facil", label: "Fácil" },
         { value: "Medio", label: "Médio" },
         { value: "Dificil", label: "Difícil" },
@@ -112,7 +127,7 @@ const NovaQuestao = () => {
             />}
             <div className={styles.form}>
                 <h1 className={styles.titulo}>Nova Questão</h1>
-                <form onSubmit={(e) => { e.preventDefault(); criarQuestao(); }}>
+                <form onSubmit={(e) => { e.preventDefault()}}>
                     <Textarea
                         labelAlignment='left'
                         label="Enunciado"
@@ -128,7 +143,7 @@ const NovaQuestao = () => {
                         label="Adicionar Assunto"
                         required
                         onChange={(e) => setAssunto(e.target.value)}
-                        options={assuntos}
+                        options={[{value: "", label: "Selecione um assunto"}, ...assuntos]}
                         className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
                         style={{ marginBottom: "5%", width: "100%" }}
                     />

@@ -10,7 +10,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './pages/Login';
 import CadastroUsuario from './pages/CadastroUsuario';
 import CadastroProfessor from './pages/CadastroProfessor';
+//rotas alunos
 import CadastroAluno from './pages/CadastroAluno';
+import TodosOsAluno from './pages/TodosOsAlunos';
+
 import CadastroAssunto from './pages/CadastroAssunto';
 import NovaQuestao from './pages/NovaQuestao';
 import Home from './pages/Home';
@@ -43,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "cadastroaluno",
     element: <CadastroAluno/>,
+  },
+  {
+    path: "todososalunos",
+    element: <TodosOsAluno/>,
   },
   {
     path: "cadastroassunto",

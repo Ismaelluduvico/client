@@ -238,7 +238,7 @@ const HomeProfessor = () => {
               <Button variant="newassunto"
                 onClick={() => navigate('/cadastroassunto')}
                 sx={{ background: 'darkgreen', color: 'white', width: '100%', '&:hover': { background: 'lightgreen' } }}>
-                Nova Assunto
+                Novo Assunto
               </Button>
               <Button variant="verassunto" sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
                 Ver Assuntos
