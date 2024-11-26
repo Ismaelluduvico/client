@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Table, Column } from 'react-rainbow-components';
 import { Input, Button, Spinner, Pagination, Modal } from 'react-rainbow-components';
 import Api from '../axios/Api';
-import styles from './todosOsAlunos.module.css';
+import styles from './todosAssuntos.module.css';
 
-const TodosOsAlunos = () => {
-    const [alunos, setAlunos] = useState([]);
+const TodosOsAssuntos = () => {
+    const [assuntos, setAssuntos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [busca, setBusca] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,155 +13,130 @@ const TodosOsAlunos = () => {
     const itemsPerPage = 10;
     const [detalhes, setDetalhes] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editedAluno, setEditedAluno] = useState(null);
+    const [editedAssunto, setEditedAssunto] = useState(null);
     
-    // Novo estado para confirmação de exclusão
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
-        alunoId: null
+        assuntoId: null
     });
 
-    // Buscar alunos da API
-    const fetchAlunos = async () => {
+    const fetchAssuntos = async () => {
         setLoading(true);
         try {
-            const response = await Api.get('/usuario/todosalunos/aluno');
-            setAlunos(response.data);
+            const response = await Api.get('/topicos');
+            setAssuntos(response.data);
             setTotalPages(Math.ceil(response.data.length / itemsPerPage));
         } catch (error) {
-            console.error('Erro ao buscar alunos:', error);
+            console.error('Erro ao buscar assuntos:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Buscar detalhes do aluno
-    const fetchDetalhesAluno = async (alunoId) => {
+    const fetchDetalhesAssunto = async (assuntoId) => {
         setLoading(true);
         try {
-            const response = await Api.get(`/usuario/${alunoId}`);
+            const response = await Api.get(`/topicos/${assuntoId}`);
             setDetalhes(response.data);
-            setEditedAluno(response.data[0]); // Preparar dados para edição
+            setEditedAssunto(response.data[0]);
             setIsModalOpen(true);
         } catch (error) {
-            console.error('Erro ao buscar detalhes do aluno:', error);
+            console.error('Erro ao buscar detalhes do assunto:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Salvar edições do aluno
     const handleSalvarEdicao = async () => {
         setLoading(true);
         try {
-            // Substitua pela sua API de atualização de aluno
-            await Api.put(`/usuario/${editedAluno.id}`, editedAluno);
+            await Api.put(`/topicos/${editedAssunto.id}`, editedAssunto);
             
-            // Atualizar lista de alunos
-            const updatedAlunos = alunos.map(aluno => 
-                aluno.id === editedAluno.id ? editedAluno : aluno
+            const updatedAssuntos = assuntos.map(assunto => 
+                assunto.id === editedAssunto.id ? editedAssunto : assunto
             );
-            setAlunos(updatedAlunos);
+            setAssuntos(updatedAssuntos);
 
-            // Atualizar detalhes
-            setDetalhes([editedAluno]);
+            setDetalhes([editedAssunto]);
             
-            // Opcional: Adicionar feedback de sucesso
-            alert('Aluno atualizado com sucesso!');
+            alert('Assunto atualizado com sucesso!');
             
-            // Fechar modal
             setIsModalOpen(false);
         } catch (error) {
             console.error('Erro ao salvar edições:', error);
-            alert('Erro ao atualizar aluno');
+            alert('Erro ao atualizar assunto');
         } finally {
             setLoading(false);
         }
     };
 
-    // Nova função para deletar aluno
-    const handleDeletarAluno = async () => {
+    const handleDeletarAssunto = async () => {
         setLoading(true);
         try {
-            // Substitua pela sua API de exclusão de aluno
-            await Api.delete(`/usuario/${deleteConfirmation.alunoId}`);
+            await Api.delete(`/topicos/${deleteConfirmation.assuntoId}`);
             
-            // Atualizar lista de alunos removendo o aluno deletado
-            const updatedAlunos = alunos.filter(aluno => aluno.id !== deleteConfirmation.alunoId);
-            setAlunos(updatedAlunos);
+            const updatedAssuntos = assuntos.filter(assunto => assunto.id !== deleteConfirmation.assuntoId);
+            setAssuntos(updatedAssuntos);
             
-            // Fechar modal de confirmação
-            setDeleteConfirmation({ isOpen: false, alunoId: null });
+            setDeleteConfirmation({ isOpen: false, assuntoId: null });
             
-            // Atualizar total de páginas
-            setTotalPages(Math.ceil(updatedAlunos.length / itemsPerPage));
+            setTotalPages(Math.ceil(updatedAssuntos.length / itemsPerPage));
             
-            // Ajustar página atual se necessário
-            if (currentPage > Math.ceil(updatedAlunos.length / itemsPerPage)) {
-                setCurrentPage(Math.max(1, Math.ceil(updatedAlunos.length / itemsPerPage)));
+            if (currentPage > Math.ceil(updatedAssuntos.length / itemsPerPage)) {
+                setCurrentPage(Math.max(1, Math.ceil(updatedAssuntos.length / itemsPerPage)));
             }
             
-            // Opcional: Adicionar feedback de sucesso
-            alert('Aluno deletado com sucesso!');
+            alert('Assunto deletado com sucesso!');
         } catch (error) {
-            console.error('Erro ao deletar aluno:', error);
-            alert('Erro ao deletar aluno');
+            console.error('Erro ao deletar assunto:', error);
+            alert('Erro ao deletar assunto');
         } finally {
             setLoading(false);
         }
     };
 
-    // Função para abrir modal de confirmação de exclusão
-    const openDeleteConfirmation = (alunoId) => {
+    const openDeleteConfirmation = (assuntoId) => {
         setDeleteConfirmation({
             isOpen: true,
-            alunoId: alunoId
+            assuntoId: assuntoId
         });
     };
 
-    // Fechar modal de confirmação de exclusão
     const closeDeleteConfirmation = () => {
         setDeleteConfirmation({
             isOpen: false,
-            alunoId: null
+            assuntoId: null
         });
     };
 
     useEffect(() => {
-        fetchAlunos();
+        fetchAssuntos();
     }, []);
 
-    // Filtrar alunos baseado na busca
-    const alunosFiltrados = alunos.filter(aluno =>
-        aluno.nomeusuario.toLowerCase().includes(busca.toLowerCase()) ||
-        aluno.turma.toString().includes(busca)
+    const assuntosFiltrados = assuntos.filter(assunto =>
+        assunto.titulo.toLowerCase().includes(busca.toLowerCase())
     );
 
-    // Paginação
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const alunosAtuais = alunosFiltrados.slice(indexOfFirstItem, indexOfLastItem);
+    const assuntosAtuais = assuntosFiltrados.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Função para mudar de página
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    // Função para ver detalhes do aluno
-    const handleVerDetalhes = (alunoId) => {
-        fetchDetalhesAluno(alunoId);
+    const handleVerDetalhes = (assuntoId) => {
+        fetchDetalhesAssunto(assuntoId);
     };
 
-    // Manipular mudanças nos campos de edição
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedAluno(prev => ({
+        setEditedAssunto(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
-    // Fechar modal de detalhes
     const closeModal = () => {
         setIsModalOpen(false);
         setDetalhes(null);
@@ -170,10 +145,10 @@ const TodosOsAlunos = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1>Lista de Alunos</h1>
+                <h1>Lista de Assuntos</h1>
                 <div className={styles.searchBar}>
                     <Input
-                        placeholder="Buscar por usuário ou turma"
+                        placeholder="Buscar por título"
                         value={busca}
                         onChange={(e) => setBusca(e.target.value)}
                         className={styles.searchInput}
@@ -187,10 +162,8 @@ const TodosOsAlunos = () => {
                 </div>
             ) : (
                 <>
-                    <Table data={alunosAtuais} keyField="id">
-                        <Column header="Nome Completo" field="nomecompleto" />
-                        <Column header="Usuario" field="nomeusuario" />
-                        <Column header="Turma" field="turma" />
+                    <Table data={assuntosAtuais} keyField="id">
+                        <Column header="Título" field="titulo" />
                         <Column
                             header="Ações"
                             component={({ row }) => (
@@ -220,7 +193,6 @@ const TodosOsAlunos = () => {
                         />
                     </div>
 
-                    {/* Modal de Confirmação de Exclusão */}
                     <Modal
                         isOpen={deleteConfirmation.isOpen}
                         onRequestClose={closeDeleteConfirmation}
@@ -228,12 +200,12 @@ const TodosOsAlunos = () => {
                         className={styles.confirmationModal}
                     >
                         <div className={styles.modalContent}>
-                            <p>Tem certeza que deseja apagar esse aluno?</p>
+                            <p>Tem certeza que deseja apagar esse assunto? Ao apagar este assunto todas as questões relacionadas a ele também serão apagadas</p>
                             <div className={styles.modalActions}>
                                 <Button 
                                     variant="destructive" 
                                     label="Continuar" 
-                                    onClick={handleDeletarAluno} 
+                                    onClick={handleDeletarAssunto} 
                                     className={styles.confirmButton}
                                 />
                                 <Button 
@@ -246,39 +218,20 @@ const TodosOsAlunos = () => {
                         </div>
                     </Modal>
 
-                    {/* Modal de Detalhes do Aluno */}
                     {isModalOpen && detalhes && (
                         <Modal
                             isOpen={isModalOpen}
                             onRequestClose={closeModal}
-                            title="Editar Aluno"
+                            title="Editar Assunto"
                             className={styles.detailsModal}
                         >
                             <div className={styles.modalContent}>
                                 <div className={styles.detailsGrid}>
                                     <div>
-                                        <strong>Usuário</strong>
+                                        <strong>Título</strong>
                                         <Input
-                                            name="nomeusuario"
-                                            value={editedAluno.nomeusuario}
-                                            onChange={handleInputChange}
-                                            className={styles.editInput}
-                                        />
-                                    </div>
-                                    <div>
-                                        <strong>Nome Completo</strong>
-                                        <Input
-                                            name="nomecompleto"
-                                            value={editedAluno.nomecompleto}
-                                            onChange={handleInputChange}
-                                            className={styles.editInput}
-                                        />
-                                    </div>
-                                    <div>
-                                        <strong>Turma</strong>
-                                        <Input
-                                            name="turma"
-                                            value={editedAluno.turma}
+                                            name="titulo"
+                                            value={editedAssunto.titulo}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
                                         />
@@ -307,4 +260,4 @@ const TodosOsAlunos = () => {
     );
 };
 
-export default TodosOsAlunos;
+export default TodosOsAssuntos;

@@ -24,7 +24,7 @@ const CadastroAluno = () => {
             const adicionaUsuario = { nomeusuario, senha, turma, nomecompleto, tipo: "aluno" };
 
             await Api.post("/usuario/cadastro", adicionaUsuario);
-            navigate('/');
+            navigate('/homeprofessor');
         } catch (error) {
             setNotification({open: true, type: "error", description: "Não foi possivel cadastrar usuário"})    
         } finally{setLoading(false)}

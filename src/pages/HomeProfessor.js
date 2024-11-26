@@ -168,7 +168,9 @@ const HomeProfessor = () => {
               >
                 Novo Professor
               </Button>
-              <Button variant="verprofessor" sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
+              <Button variant="verprofessor" 
+              onClick={() => navigate('/todososprofessores')}
+              sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
                 Ver Professores
               </Button>
             </CardContent>
@@ -192,7 +194,9 @@ const HomeProfessor = () => {
                 sx={{ background: 'darkgreen', color: 'white', width: '100%', '&:hover': { background: 'lightgreen' } }}>
                 Novo Aluno
               </Button>
-              <Button variant="veraluno" sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
+              <Button variant="veraluno" 
+              onClick={() => navigate('/todososalunos')}
+              sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
                 Ver Alunos
               </Button>
             </CardContent>
@@ -216,7 +220,9 @@ const HomeProfessor = () => {
                 variant="newqustao" sx={{ background: 'darkgreen', color: 'white', width: '100%', '&:hover': { background: 'lightgreen' } }}>
                 Nova Questão
               </Button>
-              <Button variant="verqustao" sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
+              <Button variant="verqustao" 
+              onClick={() => navigate('/todasasquestoes')}
+              sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
                 Ver Questões
               </Button>
             </CardContent>
@@ -240,7 +246,9 @@ const HomeProfessor = () => {
                 sx={{ background: 'darkgreen', color: 'white', width: '100%', '&:hover': { background: 'lightgreen' } }}>
                 Novo Assunto
               </Button>
-              <Button variant="verassunto" sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
+              <Button variant="verassunto" 
+              onClick={() => navigate('/todososassuntos')}
+              sx={{ background: 'darkgreen', color: 'white', width: '100%', mt: 2, '&:hover': { background: 'lightgreen' } }}>
                 Ver Assuntos
               </Button>
             </CardContent>

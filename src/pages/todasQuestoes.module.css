@@ -65,3 +65,29 @@
         flex-direction: column;
     }
 }
+
+.radioGroup {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.radioGroup label{
+    color: black;
+}
+
+.alternativaItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.editInput {
+    flex: 1;
+}
+
+.detailsModal{
+    color: #fff;
+    background-color: #0C4070;
+}

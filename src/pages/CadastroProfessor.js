@@ -21,10 +21,10 @@ const CadastroProfessor = () => {
     const criarUsuario = async () => {
         setLoading(true)
         try {
-            const adicionaUsuario = { nomeusuario, senha, turma, nomecompleto, tipo: "aluno" };
+            const adicionaUsuario = { nomeusuario, senha, turma, nomecompleto, tipo: "professor" };
 
             await Api.post("/usuario/cadastro", adicionaUsuario);
-            navigate('/');
+            navigate('/homeprofessor');
         } catch (error) {
             setNotification({open: true, type: "error", description: "Não foi possivel cadastrar usuário"})    
         } finally{setLoading(false)}

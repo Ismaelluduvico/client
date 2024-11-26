@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Table, Column } from 'react-rainbow-components';
 import { Input, Button, Spinner, Pagination, Modal } from 'react-rainbow-components';
 import Api from '../axios/Api';
-import styles from './todosOsAlunos.module.css';
+import styles from './todosProfessores.module.css';
 
-const TodosOsAlunos = () => {
-    const [alunos, setAlunos] = useState([]);
+const TodosOsProfessores = () => {
+    const [professores, setProfessores] = useState([]);
     const [loading, setLoading] = useState(false);
     const [busca, setBusca] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,155 +13,131 @@ const TodosOsAlunos = () => {
     const itemsPerPage = 10;
     const [detalhes, setDetalhes] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editedAluno, setEditedAluno] = useState(null);
+    const [editedProfessor, setEditedProfessor] = useState(null);
     
-    // Novo estado para confirmação de exclusão
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
-        alunoId: null
+        professorId: null
     });
 
-    // Buscar alunos da API
-    const fetchAlunos = async () => {
+    const fetchProfessores = async () => {
         setLoading(true);
         try {
-            const response = await Api.get('/usuario/todosalunos/aluno');
-            setAlunos(response.data);
+            const response = await Api.get('/usuario/todosalunos/professor');
+            setProfessores(response.data);
             setTotalPages(Math.ceil(response.data.length / itemsPerPage));
         } catch (error) {
-            console.error('Erro ao buscar alunos:', error);
+            console.error('Erro ao buscar professores:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Buscar detalhes do aluno
-    const fetchDetalhesAluno = async (alunoId) => {
+    const fetchDetalhesProfessor = async (professorId) => {
         setLoading(true);
         try {
-            const response = await Api.get(`/usuario/${alunoId}`);
+            const response = await Api.get(`/usuario/${professorId}`);
             setDetalhes(response.data);
-            setEditedAluno(response.data[0]); // Preparar dados para edição
+            setEditedProfessor(response.data[0]);
             setIsModalOpen(true);
         } catch (error) {
-            console.error('Erro ao buscar detalhes do aluno:', error);
+            console.error('Erro ao buscar detalhes do professor:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Salvar edições do aluno
     const handleSalvarEdicao = async () => {
         setLoading(true);
         try {
-            // Substitua pela sua API de atualização de aluno
-            await Api.put(`/usuario/${editedAluno.id}`, editedAluno);
+            await Api.put(`/usuario/${editedProfessor.id}`, editedProfessor);
             
-            // Atualizar lista de alunos
-            const updatedAlunos = alunos.map(aluno => 
-                aluno.id === editedAluno.id ? editedAluno : aluno
+            const updatedProfessores = professores.map(professor => 
+                professor.id === editedProfessor.id ? editedProfessor : professor
             );
-            setAlunos(updatedAlunos);
+            setProfessores(updatedProfessores);
 
-            // Atualizar detalhes
-            setDetalhes([editedAluno]);
+            setDetalhes([editedProfessor]);
             
-            // Opcional: Adicionar feedback de sucesso
-            alert('Aluno atualizado com sucesso!');
+            alert('Professor atualizado com sucesso!');
             
-            // Fechar modal
             setIsModalOpen(false);
         } catch (error) {
             console.error('Erro ao salvar edições:', error);
-            alert('Erro ao atualizar aluno');
+            alert('Erro ao atualizar professor');
         } finally {
             setLoading(false);
         }
     };
 
-    // Nova função para deletar aluno
-    const handleDeletarAluno = async () => {
+    const handleDeletarProfessor = async () => {
         setLoading(true);
         try {
-            // Substitua pela sua API de exclusão de aluno
-            await Api.delete(`/usuario/${deleteConfirmation.alunoId}`);
+            await Api.delete(`/usuario/${deleteConfirmation.professorId}`);
             
-            // Atualizar lista de alunos removendo o aluno deletado
-            const updatedAlunos = alunos.filter(aluno => aluno.id !== deleteConfirmation.alunoId);
-            setAlunos(updatedAlunos);
+            const updatedProfessores = professores.filter(professor => professor.id !== deleteConfirmation.professorId);
+            setProfessores(updatedProfessores);
             
-            // Fechar modal de confirmação
-            setDeleteConfirmation({ isOpen: false, alunoId: null });
+            setDeleteConfirmation({ isOpen: false, professorId: null });
             
-            // Atualizar total de páginas
-            setTotalPages(Math.ceil(updatedAlunos.length / itemsPerPage));
+            setTotalPages(Math.ceil(updatedProfessores.length / itemsPerPage));
             
-            // Ajustar página atual se necessário
-            if (currentPage > Math.ceil(updatedAlunos.length / itemsPerPage)) {
-                setCurrentPage(Math.max(1, Math.ceil(updatedAlunos.length / itemsPerPage)));
+            if (currentPage > Math.ceil(updatedProfessores.length / itemsPerPage)) {
+                setCurrentPage(Math.max(1, Math.ceil(updatedProfessores.length / itemsPerPage)));
             }
             
-            // Opcional: Adicionar feedback de sucesso
-            alert('Aluno deletado com sucesso!');
+            alert('Professor deletado com sucesso!');
         } catch (error) {
-            console.error('Erro ao deletar aluno:', error);
-            alert('Erro ao deletar aluno');
+            console.error('Erro ao deletar professor:', error);
+            alert('Erro ao deletar professor');
         } finally {
             setLoading(false);
         }
     };
 
-    // Função para abrir modal de confirmação de exclusão
-    const openDeleteConfirmation = (alunoId) => {
+    const openDeleteConfirmation = (professorId) => {
         setDeleteConfirmation({
             isOpen: true,
-            alunoId: alunoId
+            professorId: professorId
         });
     };
 
-    // Fechar modal de confirmação de exclusão
     const closeDeleteConfirmation = () => {
         setDeleteConfirmation({
             isOpen: false,
-            alunoId: null
+            professorId: null
         });
     };
 
     useEffect(() => {
-        fetchAlunos();
+        fetchProfessores();
     }, []);
 
-    // Filtrar alunos baseado na busca
-    const alunosFiltrados = alunos.filter(aluno =>
-        aluno.nomeusuario.toLowerCase().includes(busca.toLowerCase()) ||
-        aluno.turma.toString().includes(busca)
+    const professoresFiltrados = professores.filter(professor =>
+        professor.nomeusuario.toLowerCase().includes(busca.toLowerCase()) ||
+        professor.turma.toString().includes(busca)
     );
 
-    // Paginação
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const alunosAtuais = alunosFiltrados.slice(indexOfFirstItem, indexOfLastItem);
+    const professoresAtuais = professoresFiltrados.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Função para mudar de página
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    // Função para ver detalhes do aluno
-    const handleVerDetalhes = (alunoId) => {
-        fetchDetalhesAluno(alunoId);
+    const handleVerDetalhes = (professorId) => {
+        fetchDetalhesProfessor(professorId);
     };
 
-    // Manipular mudanças nos campos de edição
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedAluno(prev => ({
+        setEditedProfessor(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
-    // Fechar modal de detalhes
     const closeModal = () => {
         setIsModalOpen(false);
         setDetalhes(null);
@@ -170,7 +146,7 @@ const TodosOsAlunos = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1>Lista de Alunos</h1>
+                <h1>Lista de Professores</h1>
                 <div className={styles.searchBar}>
                     <Input
                         placeholder="Buscar por usuário ou turma"
@@ -187,9 +163,9 @@ const TodosOsAlunos = () => {
                 </div>
             ) : (
                 <>
-                    <Table data={alunosAtuais} keyField="id">
+                    <Table data={professoresAtuais} keyField="id">
                         <Column header="Nome Completo" field="nomecompleto" />
-                        <Column header="Usuario" field="nomeusuario" />
+                        <Column header="Usuário" field="nomeusuario" />
                         <Column header="Turma" field="turma" />
                         <Column
                             header="Ações"
@@ -220,7 +196,6 @@ const TodosOsAlunos = () => {
                         />
                     </div>
 
-                    {/* Modal de Confirmação de Exclusão */}
                     <Modal
                         isOpen={deleteConfirmation.isOpen}
                         onRequestClose={closeDeleteConfirmation}
@@ -228,12 +203,12 @@ const TodosOsAlunos = () => {
                         className={styles.confirmationModal}
                     >
                         <div className={styles.modalContent}>
-                            <p>Tem certeza que deseja apagar esse aluno?</p>
+                            <p>Tem certeza que deseja apagar esse professor?</p>
                             <div className={styles.modalActions}>
                                 <Button 
                                     variant="destructive" 
                                     label="Continuar" 
-                                    onClick={handleDeletarAluno} 
+                                    onClick={handleDeletarProfessor} 
                                     className={styles.confirmButton}
                                 />
                                 <Button 
@@ -246,12 +221,11 @@ const TodosOsAlunos = () => {
                         </div>
                     </Modal>
 
-                    {/* Modal de Detalhes do Aluno */}
                     {isModalOpen && detalhes && (
                         <Modal
                             isOpen={isModalOpen}
                             onRequestClose={closeModal}
-                            title="Editar Aluno"
+                            title="Editar Professor"
                             className={styles.detailsModal}
                         >
                             <div className={styles.modalContent}>
@@ -260,7 +234,7 @@ const TodosOsAlunos = () => {
                                         <strong>Usuário</strong>
                                         <Input
                                             name="nomeusuario"
-                                            value={editedAluno.nomeusuario}
+                                            value={editedProfessor.nomeusuario}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
                                         />
@@ -269,7 +243,7 @@ const TodosOsAlunos = () => {
                                         <strong>Nome Completo</strong>
                                         <Input
                                             name="nomecompleto"
-                                            value={editedAluno.nomecompleto}
+                                            value={editedProfessor.nomecompleto}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
                                         />
@@ -278,7 +252,7 @@ const TodosOsAlunos = () => {
                                         <strong>Turma</strong>
                                         <Input
                                             name="turma"
-                                            value={editedAluno.turma}
+                                            value={editedProfessor.turma}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
                                         />
@@ -307,4 +281,4 @@ const TodosOsAlunos = () => {
     );
 };
 
-export default TodosOsAlunos;
+export default TodosOsProfessores;
