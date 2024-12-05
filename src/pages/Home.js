@@ -1,21 +1,114 @@
-import Api from '../axios/Api';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { RadioButtonGroup, Button, Table, Column, Modal } from 'react-rainbow-components';
 import styles from './home.module.css';
-import { RadioButtonGroup, Button } from 'react-rainbow-components';
-import { useState } from 'react';
+import { levelDetails, levels, handleStartGame, fetchRankings } from './homeUtils';
 
 const Home = () => {
-
   const [level, setLevel] = useState();
-  const hardAvatar = "https://img.freepik.com/free-vector/coloured-knight-design_1152-54.jpg?t=st=1721778061~exp=1721781661~hmac=834d0dedda278c69996d92e73a77d8eb7bd07801960484c4988fc0b5c685164a&w=740"
-  const easyAvatar = "https://img.freepik.com/free-vector/coloured-knight-design_1152-54.jpg?t=st=1721778061~exp=1721781661~hmac=834d0dedda278c69996d92e73a77d8eb7bd07801960484c4988fc0b5c685164a&w=740"
-  const mediumAvatar = "https://img.freepik.com/free-vector/fantasy-warrior-sword_225004-1263.jpg?t=st=1721778151~exp=1721781751~hmac=c06aeed18db5bbfbb7ac6a4106870a5194442de267c4948f62e549fa987d84ee&w=740"
-  const randomAvatar = "https://img.freepik.com/free-vector/fantasy-warrior-sword_225004-1263.jpg?t=st=1721778151~exp=1721781751~hmac=c06aeed18db5bbfbb7ac6a4106870a5194442de267c4948f62e549fa987d84ee&w=740"
+  const [rankings, setRankings] = useState({ 
+    Facil: [], 
+    Medio: [], 
+    Dificil: [] 
+  });
+  const [showFullRankings, setShowFullRankings] = useState({
+    Facil: false,
+    Medio: false,
+    Dificil: false
+  });
+  const [selectedLevelModal, setSelectedLevelModal] = useState(null);
 
-  const easyMensage = "Este modo de jogo possui questões com um nível de dificuldade baixo. Feito principalmente para quem ainda é iniciante."
-  const mediumMensage = "Este modo de jogo possui questões com um nível de dificuldade média. Feito pra quem quer uma experiencia de jogo equilibrada."
-  const hardMensage = "Este modo de jogo possui questões com um nível de ficuldade auta. Neste nível você colocará os seus mais profundos conhecimentos sobre história à prova!"
-  const randomMensage = "Este modo de jogo contém questões de todoas as dificuldades."
+  useEffect(() => {
+    const fetchAllRankings = async () => {
+      const facilRankings = await fetchRankings('Facil');
+      const medioRankings = await fetchRankings('Medio');
+      const dificilRankings = await fetchRankings('Dificil');
+
+      setRankings({ 
+        Facil: facilRankings, 
+        Medio: medioRankings, 
+        Dificil: dificilRankings 
+      });
+    };
+
+    fetchAllRankings();
+  }, []);
+
+  const handleShowLevelRankings = (level) => {
+    setSelectedLevelModal(level);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedLevelModal(null);
+  };
+
+  const renderRankingSection = (levelKey, levelName) => {
+    const levelRankings = rankings[levelKey];
+    
+    return (
+      <div className={styles[`ranking${levelKey}`]}>
+        <h2>{levelName}</h2>
+        <div className={styles.rankingContainer}>
+          <Table 
+            data={levelRankings.slice(0, 3).map((player, index) => ({
+              ...player,
+              rank: `${index + 1}º`
+            }))} 
+            keyField="name"
+          >
+            <Column 
+              header="Ranking" 
+              field="rank" 
+              width={80}
+            />
+            <Column header="Nome" field="name" />
+            <Column header="Corretas" field="correctAnswers" />
+            <Column header="Incorretas" field="wrongAnswers" />
+          </Table>
+        </div>
+        <Button
+          label="Ver Todos"
+          onClick={() => handleShowLevelRankings(levelKey)}
+        />
+      </div>
+    );
+  };
+
+  const renderFullRankingModal = () => {
+    if (!selectedLevelModal) return null;
+
+    const fullRankings = rankings[selectedLevelModal];
+    const levelName = {
+      Facil: 'Fácil',
+      Medio: 'Médio',
+      Dificil: 'Difícil'
+    }[selectedLevelModal];
+
+    return (
+      <Modal
+        isOpen={!!selectedLevelModal}
+        onRequestClose={handleCloseModal}
+        title={`Ranking Completo - ${levelName}`}
+        size="large"
+      >
+        <Table 
+          data={fullRankings.map((player, index) => ({
+            ...player,
+            rank: `${index + 1}º`
+          }))} 
+          keyField="name"
+        >
+          <Column 
+            header="Ranking" 
+            field="rank" 
+            width={80}
+          />
+          <Column header="Nome" field="name" />
+          <Column header="Corretas" field="correctAnswers" />
+          <Column header="Incorretas" field="wrongAnswers" />
+        </Table>
+      </Modal>
+    );
+  };
 
   return (
     <div className={styles.root}>
@@ -31,32 +124,34 @@ const Home = () => {
             onChange={({ target: { value } }) => setLevel(value)}
           />
         </div>
-        <div className={styles.levelDescription}>
-          <img width={"40%"} src={{ easy: easyAvatar, medium: mediumAvatar, hard: hardAvatar, random: randomAvatar }[level]} />
-          <h1>{{ easy: easyMensage, medium: mediumMensage, hard: hardMensage, random: randomMensage }[level]}</h1>
-        </div>
+        {level && (
+          <div className={styles.levelDescription}>
+            <img 
+              width="40%" 
+              src={levelDetails[level].avatar} 
+              alt={`Avatar ${level}`} 
+            />
+            <h1>{levelDetails[level].message}</h1>
+          </div>
+        )}
         <div className={styles.inicarJogo}>
           <Button
             label='JOGAR'
             size="large"
+            onClick={() => handleStartGame(level)}
+            disabled={!level}
           />
         </div>
       </div>
       <div className={styles.ranking}>
         <h1>Ranking</h1>
-        <div className={styles.rankingHard}></div>
-        <div className={styles.rankingMedium}></div>
-        <div className={styles.rankingEasy}></div>
+        {renderRankingSection('Facil', 'Fácil')}
+        {renderRankingSection('Medio', 'Médio')}
+        {renderRankingSection('Dificil', 'Difícil')}
       </div>
+      {renderFullRankingModal()}
     </div>
-  )
-}
+  );
+};
 
-export default Home
-
-const levels = [
-  { value: 'easy', label: 'Fácil' },
-  { value: 'medium', label: 'Médio' },
-  { value: 'hard', label: 'Difícil' },
-  { value: 'random', label: 'Aleatório' },
-]
+export default Home;

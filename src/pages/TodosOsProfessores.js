@@ -237,6 +237,7 @@ const TodosOsProfessores = () => {
                                             value={editedProfessor.nomeusuario}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
+                                            disabled={true}
                                         />
                                     </div>
                                     <div>

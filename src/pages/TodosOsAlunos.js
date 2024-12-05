@@ -14,7 +14,7 @@ const TodosOsAlunos = () => {
     const [detalhes, setDetalhes] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editedAluno, setEditedAluno] = useState(null);
-    
+
     // Novo estado para confirmação de exclusão
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
@@ -56,19 +56,19 @@ const TodosOsAlunos = () => {
         try {
             // Substitua pela sua API de atualização de aluno
             await Api.put(`/usuario/${editedAluno.id}`, editedAluno);
-            
+
             // Atualizar lista de alunos
-            const updatedAlunos = alunos.map(aluno => 
+            const updatedAlunos = alunos.map(aluno =>
                 aluno.id === editedAluno.id ? editedAluno : aluno
             );
             setAlunos(updatedAlunos);
 
             // Atualizar detalhes
             setDetalhes([editedAluno]);
-            
+
             // Opcional: Adicionar feedback de sucesso
             alert('Aluno atualizado com sucesso!');
-            
+
             // Fechar modal
             setIsModalOpen(false);
         } catch (error) {
@@ -85,22 +85,22 @@ const TodosOsAlunos = () => {
         try {
             // Substitua pela sua API de exclusão de aluno
             await Api.delete(`/usuario/${deleteConfirmation.alunoId}`);
-            
+
             // Atualizar lista de alunos removendo o aluno deletado
             const updatedAlunos = alunos.filter(aluno => aluno.id !== deleteConfirmation.alunoId);
             setAlunos(updatedAlunos);
-            
+
             // Fechar modal de confirmação
             setDeleteConfirmation({ isOpen: false, alunoId: null });
-            
+
             // Atualizar total de páginas
             setTotalPages(Math.ceil(updatedAlunos.length / itemsPerPage));
-            
+
             // Ajustar página atual se necessário
             if (currentPage > Math.ceil(updatedAlunos.length / itemsPerPage)) {
                 setCurrentPage(Math.max(1, Math.ceil(updatedAlunos.length / itemsPerPage)));
             }
-            
+
             // Opcional: Adicionar feedback de sucesso
             alert('Aluno deletado com sucesso!');
         } catch (error) {
@@ -230,16 +230,16 @@ const TodosOsAlunos = () => {
                         <div className={styles.modalContent}>
                             <p>Tem certeza que deseja apagar esse aluno?</p>
                             <div className={styles.modalActions}>
-                                <Button 
-                                    variant="destructive" 
-                                    label="Continuar" 
-                                    onClick={handleDeletarAluno} 
+                                <Button
+                                    variant="destructive"
+                                    label="Continuar"
+                                    onClick={handleDeletarAluno}
                                     className={styles.confirmButton}
                                 />
-                                <Button 
-                                    variant="neutral" 
-                                    label="Cancelar" 
-                                    onClick={closeDeleteConfirmation} 
+                                <Button
+                                    variant="neutral"
+                                    label="Cancelar"
+                                    onClick={closeDeleteConfirmation}
                                     className={styles.cancelButton}
                                 />
                             </div>
@@ -263,6 +263,7 @@ const TodosOsAlunos = () => {
                                             value={editedAluno.nomeusuario}
                                             onChange={handleInputChange}
                                             className={styles.editInput}
+                                            disabled={true}
                                         />
                                     </div>
                                     <div>
@@ -285,16 +286,16 @@ const TodosOsAlunos = () => {
                                     </div>
                                 </div>
                                 <div className={styles.modalActions}>
-                                    <Button 
-                                        variant="success" 
-                                        label="Salvar" 
-                                        onClick={handleSalvarEdicao} 
+                                    <Button
+                                        variant="success"
+                                        label="Salvar"
+                                        onClick={handleSalvarEdicao}
                                         className={styles.saveButton}
                                     />
-                                    <Button 
-                                        variant="neutral" 
-                                        label="Cancelar" 
-                                        onClick={closeModal} 
+                                    <Button
+                                        variant="neutral"
+                                        label="Cancelar"
+                                        onClick={closeModal}
                                         className={styles.cancelButton}
                                     />
                                 </div>

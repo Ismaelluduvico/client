@@ -9,7 +9,7 @@ const NovaQuestao = () => {
     const [enuciado, setEnunciado] = useState('');
     const [dificuldade, setDificuldade] = useState('');
     const [assunto, setAssunto] = useState('');
-    const [alternativas, setAlternativas] = useState([...Array(4)].map(i => ({
+    const [alternativas, setAlternativas] = useState([...Array(5)].map(i => ({
         resposta: '', certoerrado: false, questaoid: null
     })));
     const [correta, setCorreta] = useState(null);
@@ -180,7 +180,7 @@ const NovaQuestao = () => {
                             onChange={(e) => handleCorretoChange(e.target.value)}
                             label={<p className={styles.labelStyle}>Das alternativas acima, selecione a correta</p>}
                             orientation="horizontal"
-                            style={{ marginTop: "1%", marginLeft: "10%", marginBottom: "5%" }}
+                            style={{ marginTop: "1%", marginLeft: "0%", marginBottom: "5%" }}
                         />
                     </div>
                     <div className={styles.button}>
