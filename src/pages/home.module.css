@@ -1,11 +1,14 @@
 .root {
     min-height: 100vh;
-    min-width: 100%;
-    max-width: 100%;
+    min-width: calc(100% - 240px);
+    max-width: calc(100% - 240px);
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    align-self: flex-end;
     background-color: #fff;
+    position: absolute;
+    right: 0;
 }
 
 .root * {

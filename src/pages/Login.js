@@ -13,22 +13,28 @@ const Login = () => {
     const [senha, setSenha] = useState()
     const [loading, setLoading] = useState(false)
     const [notification, setNotification] = useState({ open: false, type: "", description: "" })
-
+    useEffect(() => { localStorage.clear() }, [])
     const Logar = async () => {
         setLoading(true)
+        localStorage.clear()
         try {
             const dadosUsuario = { nomeusuario, senha };
             const { data } = await Api.post("/auth/login", dadosUsuario);
             const { tipo } = jose.decodeJwt(data.token)
             localStorage.setItem("token", data.token)
 
-            const screenToNavigate = {
-                aluno: '/home',
-                professor: '/homeprofessor',
-                root: 'homeprofessor'
-            }[tipo]
+            // Ensure the token is set before navigating
+            if (localStorage.getItem("token")) {
+                const screenToNavigate = {
+                    aluno: '/home',
+                    professor: '/homeprofessor',
+                    root: 'homeprofessor'
+                }[tipo]
 
-            navigate(screenToNavigate)
+                navigate(screenToNavigate, { replace: true })
+            } else {
+                throw new Error("Token not set in localStorage")
+            }
 
         } catch (error) {
             console.log(error)
