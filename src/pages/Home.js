@@ -3,8 +3,9 @@ import { RadioButtonGroup, Button, Table, Column, Modal } from 'react-rainbow-co
 import styles from './home.module.css';
 import { levelDetails, levels, handleStartGame, fetchRankings } from './homeUtils';
 import QuizModal from './QuizModal';
+import { SidebarMenuHomeAluno } from './SidebarMenuHomeAluno';
 import Api from '../axios/Api';
-import { SidebarMenu } from './SidebarMenu';
+
 
 const Home = () => {
   const [level, setLevel] = useState();
@@ -135,7 +136,7 @@ const Home = () => {
 
   return (
     <>
-      <SidebarMenu isMobile={false} />
+      <SidebarMenuHomeAluno isMobile={false} />
 
       <div className={styles.root}>
         <div className={styles.quizz}>
