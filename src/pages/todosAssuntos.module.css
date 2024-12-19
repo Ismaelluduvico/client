@@ -1,7 +1,19 @@
 .container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    min-height: 100vh;
+    min-width: calc(100% - 240px);
+    max-width: calc(100% - 240px);
+    justify-content: space-between;
+    flex-direction: row;
+    align-self: flex-end;
+    background-color: #fff;
+    position: absolute;
+    right: 0;
+}
+
+.table{
+    margin-left: 10%;
+    min-width: 80%;
+    max-width: 80%;
 }
 
 .header {

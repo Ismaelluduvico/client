@@ -40,9 +40,20 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="cadastrousuario" element={<CadastroUsuario />} />
       <Route path="home" element={
         <PrivateRoute userType="aluno" allowedTypes={['aluno']}>
           <Home />
+        </PrivateRoute>
+      } />
+      <Route path="cadastroaluno" element={
+        <PrivateRoute userType="professor" allowedTypes={['professor']}>
+          <CadastroAluno />
+        </PrivateRoute>
+      } />
+      <Route path="todososalunos" element={
+        <PrivateRoute userType="professor" allowedTypes={['professor']}>
+          <TodosOsAluno />
         </PrivateRoute>
       } />
       <Route path="homeprofessor" element={

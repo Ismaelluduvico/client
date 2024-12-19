@@ -136,6 +136,7 @@ const Home = () => {
 
   return (
     <>
+      <SidebarMenuHomeAluno isMobile={true} />
       <SidebarMenuHomeAluno isMobile={false} />
 
       <div className={styles.root}>

@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Column } from 'react-rainbow-components';
-import { Input, Button, Spinner, Pagination, Modal } from 'react-rainbow-components';
+import { Input, Button, Spinner, Modal } from 'react-rainbow-components';
 import Api from '../axios/Api';
+import { SidebarMenu } from './SidebarMenu';
 import styles from './todosAssuntos.module.css';
 
 const TodosOsAssuntos = () => {
     const [assuntos, setAssuntos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [busca, setBusca] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const itemsPerPage = 10;
     const [detalhes, setDetalhes] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editedAssunto, setEditedAssunto] = useState(null);
-    
+
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
         assuntoId: null
@@ -25,7 +23,6 @@ const TodosOsAssuntos = () => {
         try {
             const response = await Api.get('/topicos');
             setAssuntos(response.data);
-            setTotalPages(Math.ceil(response.data.length / itemsPerPage));
         } catch (error) {
             console.error('Erro ao buscar assuntos:', error);
         } finally {
@@ -51,16 +48,16 @@ const TodosOsAssuntos = () => {
         setLoading(true);
         try {
             await Api.put(`/topicos/${editedAssunto.id}`, editedAssunto);
-            
-            const updatedAssuntos = assuntos.map(assunto => 
+
+            const updatedAssuntos = assuntos.map(assunto =>
                 assunto.id === editedAssunto.id ? editedAssunto : assunto
             );
             setAssuntos(updatedAssuntos);
 
             setDetalhes([editedAssunto]);
-            
+
             alert('Assunto atualizado com sucesso!');
-            
+
             setIsModalOpen(false);
         } catch (error) {
             console.error('Erro ao salvar edições:', error);
@@ -74,18 +71,12 @@ const TodosOsAssuntos = () => {
         setLoading(true);
         try {
             await Api.delete(`/topicos/${deleteConfirmation.assuntoId}`);
-            
+
             const updatedAssuntos = assuntos.filter(assunto => assunto.id !== deleteConfirmation.assuntoId);
             setAssuntos(updatedAssuntos);
-            
+
             setDeleteConfirmation({ isOpen: false, assuntoId: null });
-            
-            setTotalPages(Math.ceil(updatedAssuntos.length / itemsPerPage));
-            
-            if (currentPage > Math.ceil(updatedAssuntos.length / itemsPerPage)) {
-                setCurrentPage(Math.max(1, Math.ceil(updatedAssuntos.length / itemsPerPage)));
-            }
-            
+
             alert('Assunto deletado com sucesso!');
         } catch (error) {
             console.error('Erro ao deletar assunto:', error);
@@ -117,14 +108,6 @@ const TodosOsAssuntos = () => {
         assunto.titulo.toLowerCase().includes(busca.toLowerCase())
     );
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const assuntosAtuais = assuntosFiltrados.slice(indexOfFirstItem, indexOfLastItem);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
     const handleVerDetalhes = (assuntoId) => {
         fetchDetalhesAssunto(assuntoId);
     };
@@ -143,120 +126,116 @@ const TodosOsAssuntos = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>Lista de Assuntos</h1>
-                <div className={styles.searchBar}>
-                    <Input
-                        placeholder="Buscar por título"
-                        value={busca}
-                        onChange={(e) => setBusca(e.target.value)}
-                        className={styles.searchInput}
-                    />
-                </div>
-            </div>
-
-            {loading ? (
-                <div className={styles.spinnerContainer}>
-                    <Spinner size="large" variant="brand" />
-                </div>
-            ) : (
-                <>
-                    <Table data={assuntosAtuais} keyField="id">
-                        <Column header="Título" field="titulo" />
-                        <Column
-                            header="Ações"
-                            component={({ row }) => (
-                                <div className={styles.actionButtons}>
-                                    <Button
-                                        variant="outline-brand"
-                                        label="Ver Detalhes"
-                                        onClick={() => handleVerDetalhes(row.id)}
-                                        className={styles.actionButton}
-                                    />
-                                    <Button
-                                        variant="destructive"
-                                        label="Deletar"
-                                        onClick={() => openDeleteConfirmation(row.id)}
-                                        className={styles.deleteButton}
-                                    />
-                                </div>
-                            )}
-                        />
-                    </Table>
-
-                    <div className={styles.paginationContainer}>
-                        <Pagination
-                            pages={totalPages}
-                            activePage={currentPage}
-                            onChange={handlePageChange}
+        <>
+            <SidebarMenu isMobile={true} />
+            <SidebarMenu isMobile={false} />
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h1>Lista de Assuntos</h1>
+                    <div className={styles.searchBar}>
+                        <Input
+                            placeholder="Buscar por título"
+                            value={busca}
+                            onChange={(e) => setBusca(e.target.value)}
+                            className={styles.searchInput}
                         />
                     </div>
+                </div>
 
-                    <Modal
-                        isOpen={deleteConfirmation.isOpen}
-                        onRequestClose={closeDeleteConfirmation}
-                        title="Confirmação de Exclusão"
-                        className={styles.confirmationModal}
-                    >
-                        <div className={styles.modalContent}>
-                            <p>Tem certeza que deseja apagar esse assunto? Ao apagar este assunto todas as questões relacionadas a ele também serão apagadas</p>
-                            <div className={styles.modalActions}>
-                                <Button 
-                                    variant="destructive" 
-                                    label="Continuar" 
-                                    onClick={handleDeletarAssunto} 
-                                    className={styles.confirmButton}
-                                />
-                                <Button 
-                                    variant="neutral" 
-                                    label="Cancelar" 
-                                    onClick={closeDeleteConfirmation} 
-                                    className={styles.cancelButton}
-                                />
-                            </div>
-                        </div>
-                    </Modal>
-
-                    {isModalOpen && detalhes && (
-                        <Modal
-                            isOpen={isModalOpen}
-                            onRequestClose={closeModal}
-                            title="Editar Assunto"
-                            className={styles.detailsModal}
-                        >
-                            <div className={styles.modalContent}>
-                                <div className={styles.detailsGrid}>
-                                    <div>
-                                        <strong>Título</strong>
-                                        <Input
-                                            name="titulo"
-                                            value={editedAssunto.titulo}
-                                            onChange={handleInputChange}
-                                            className={styles.editInput}
+                {loading ? (
+                    <div className={styles.spinnerContainer}>
+                        <Spinner size="large" variant="brand" />
+                    </div>
+                ) : (
+                    <>
+                        <Table className={styles.table} data={assuntosFiltrados} keyField="id">
+                            <Column header="Título" field="titulo" />
+                            <Column
+                                header="Ações"
+                                component={({ row }) => (
+                                    <div className={styles.actionButtons}>
+                                        <Button
+                                            variant="outline-brand"
+                                            label="Ver Detalhes"
+                                            onClick={() => handleVerDetalhes(row.id)}
+                                            className={styles.actionButton}
+                                        />
+                                        <Button
+                                            variant="destructive"
+                                            label="Deletar"
+                                            onClick={() => openDeleteConfirmation(row.id)}
+                                            className={styles.deleteButton}
                                         />
                                     </div>
-                                </div>
+                                )}
+                            />
+                        </Table>
+
+                        <Modal
+                            isOpen={deleteConfirmation.isOpen}
+                            onRequestClose={closeDeleteConfirmation}
+                            title="Confirmação de Exclusão"
+                            className={styles.confirmationModal}
+                        >
+                            <div className={styles.modalContent}>
+                                <p>Tem certeza que deseja apagar esse assunto? Ao apagar este assunto todas as questões relacionadas a ele também serão apagadas</p>
                                 <div className={styles.modalActions}>
-                                    <Button 
-                                        variant="success" 
-                                        label="Salvar" 
-                                        onClick={handleSalvarEdicao} 
-                                        className={styles.saveButton}
+                                    <Button
+                                        variant="destructive"
+                                        label="Continuar"
+                                        onClick={handleDeletarAssunto}
+                                        className={styles.confirmButton}
                                     />
-                                    <Button 
-                                        variant="neutral" 
-                                        label="Cancelar" 
-                                        onClick={closeModal} 
+                                    <Button
+                                        variant="neutral"
+                                        label="Cancelar"
+                                        onClick={closeDeleteConfirmation}
                                         className={styles.cancelButton}
                                     />
                                 </div>
                             </div>
                         </Modal>
-                    )}
-                </>
-            )}
-        </div>
+
+                        {isModalOpen && detalhes && (
+                            <Modal
+                                isOpen={isModalOpen}
+                                onRequestClose={closeModal}
+                                title="Editar Assunto"
+                                className={styles.detailsModal}
+                            >
+                                <div className={styles.modalContent}>
+                                    <div className={styles.detailsGrid}>
+                                        <div>
+                                            <strong>Título</strong>
+                                            <Input
+                                                name="titulo"
+                                                value={editedAssunto.titulo}
+                                                onChange={handleInputChange}
+                                                className={styles.editInput}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={styles.modalActions}>
+                                        <Button
+                                            variant="success"
+                                            label="Salvar"
+                                            onClick={handleSalvarEdicao}
+                                            className={styles.saveButton}
+                                        />
+                                        <Button
+                                            variant="neutral"
+                                            label="Cancelar"
+                                            onClick={closeModal}
+                                            className={styles.cancelButton}
+                                        />
+                                    </div>
+                                </div>
+                            </Modal>
+                        )}
+                    </>
+                )}
+            </div>
+        </>
     );
 };
 

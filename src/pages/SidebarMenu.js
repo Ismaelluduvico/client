@@ -156,7 +156,7 @@ export const SidebarMenu = ({ isMobile }) => {
     {
       text: 'Home',
       icon: <Home size={20} />,
-      path: '/home',
+      path: '/homeprofessor',
       active: true
     },
     {
@@ -173,8 +173,14 @@ export const SidebarMenu = ({ isMobile }) => {
     },
     {
       text: 'Questões',
-      icon: <Book size={20} />,
+      icon: <HelpCircle size={20} />,
       path: '/todasasquestoes',
+      active: userType === 'professor'
+    },
+    {
+      text: 'Assuntos',
+      icon: <Book size={20} />,
+      path: '/todososassuntos',
       active: userType === 'professor'
     }
   ];
