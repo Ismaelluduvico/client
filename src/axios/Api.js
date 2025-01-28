@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    baseURL: "https://jogo-server-429819.uc.r.appspot.com/",
+    baseURL: "http://localhost:5000/",
     //http://localhost:5000/
     //https://jogo-server-429819.uc.r.appspot.com/
     headers: {

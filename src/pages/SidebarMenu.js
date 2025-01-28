@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../axios/Api';
-import { Users, GraduationCap, HelpCircle, Menu, X, Home, Book, Settings, LogOut, User as UserIcon, Edit } from 'lucide-react';
+import { Users, GraduationCap, HelpCircle, Menu, X, Home, Book, Settings, LogOut, User as UserIcon, Edit, Trash2 } from 'lucide-react';
 import {
   Box,
   Typography,
@@ -29,6 +29,7 @@ export const SidebarMenu = ({ isMobile }) => {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [userType, setUserType] = useState(null);
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // User information state
   const [userInfo, setUserInfo] = useState({
@@ -41,6 +42,23 @@ export const SidebarMenu = ({ isMobile }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const handleOpenDeleteDialog = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await Api.delete('/usuario/delete');
+      localStorage.removeItem('token');
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao deletar usuário:', error);
+    }
+  };
 
   // Editable state
   const [editableUserInfo, setEditableUserInfo] = useState({ ...userInfo });
@@ -138,7 +156,6 @@ export const SidebarMenu = ({ isMobile }) => {
         turma: editableUserInfo.turma,
         senha: editableUserInfo.senha,
         novasenha: editableUserInfo.novasenha
-        // Adicione outros campos necessários
       };
 
       await Api.put('/auth/update', payload);
@@ -340,13 +357,24 @@ export const SidebarMenu = ({ isMobile }) => {
       >
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           Informações do Usuário
-          <Button
-            onClick={handleEditToggle}
-            startIcon={<Edit size={20} />}
-            sx={{ color: 'white' }}
-          >
-            {isEditing ? 'Cancelar' : 'Editar'}
-          </Button>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              onClick={handleEditToggle}
+              startIcon={<Edit size={20} />}
+              sx={{ color: 'white' }}
+            >
+              {isEditing ? 'Cancelar' : 'Editar'}
+            </Button>
+            {!isEditing && (
+              <Button
+                onClick={handleOpenDeleteDialog}
+                startIcon={<Trash2 size={20} />}
+                sx={{ color: 'error.main' }}
+              >
+                Deletar
+              </Button>
+            )}
+          </Box>
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
@@ -506,6 +534,34 @@ export const SidebarMenu = ({ isMobile }) => {
             </Button>
           </DialogActions>
         )}
+      </Dialog>
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+        sx={{
+          '& .MuiDialog-paper': {
+            backgroundColor: '#1a237e',
+            color: 'white'
+          }
+        }}
+      >
+        <DialogTitle id="delete-dialog-title">Confirmar Exclusão</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+            Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} sx={{ color: 'white' }}>
+            Cancelar
+          </Button>
+          <Button onClick={handleDeleteUser} color="error" variant="contained">
+            Excluir Conta
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

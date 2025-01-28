@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, Button } from 'react-rainbow-components';
-import styles from './quiz.module.css';
+import styles from './home.module.css';
 import Api from '../axios/Api';
 import { fetchShuffledQuestions } from './homeUtils';
 

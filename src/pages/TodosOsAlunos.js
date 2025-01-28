@@ -32,7 +32,7 @@ const TodosOsAlunos = () => {
     const fetchDetalhesAluno = async (alunoId) => {
         setLoading(true);
         try {
-            const response = await Api.get(`/usuario/${alunoId}`);
+            const response = await Api.get(`/usuario/dadosaluno/${alunoId}`);
             setDetalhes(response.data);
             setEditedAluno(response.data[0]);
             setIsModalOpen(true);
@@ -46,7 +46,8 @@ const TodosOsAlunos = () => {
     const handleSalvarEdicao = async () => {
         setLoading(true);
         try {
-            await Api.put(`/usuario/${editedAluno.id}`, editedAluno);
+            
+            await Api.put(`/usuario/atualizaraluno/${editedAluno.id}`, editedAluno);
             const updatedAlunos = alunos.map(aluno =>
                 aluno.id === editedAluno.id ? editedAluno : aluno
             );
@@ -65,7 +66,7 @@ const TodosOsAlunos = () => {
     const handleDeletarAluno = async () => {
         setLoading(true);
         try {
-            await Api.delete(`/usuario/${deleteConfirmation.alunoId}`);
+            await Api.delete(`/usuario/deletaluno/${deleteConfirmation.alunoId}`);
             const updatedAlunos = alunos.filter(aluno => aluno.id !== deleteConfirmation.alunoId);
             setAlunos(updatedAlunos);
             setDeleteConfirmation({ isOpen: false, alunoId: null });

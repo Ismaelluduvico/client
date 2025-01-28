@@ -136,8 +136,7 @@ const Home = () => {
 
   return (
     <>
-      <SidebarMenuHomeAluno isMobile={true} />
-      <SidebarMenuHomeAluno isMobile={false} />
+      <SidebarMenuHomeAluno/>
 
       <div className={styles.root}>
         <div className={styles.quizz}>

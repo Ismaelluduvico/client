@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../axios/Api';
-import { Users, GraduationCap, HelpCircle, Menu, X, Home, Book, Settings, LogOut, User as UserIcon, Edit, Award } from 'lucide-react';
+import { Menu, X, Home, LogOut, User as UserIcon, Edit, Award, Trash2 } from 'lucide-react';
 import {
     Box,
     Typography,
@@ -17,17 +17,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    TextField,
-    Avatar,
-    CircularProgress,
-    Modal,
-    Paper,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody
+    TextField
 } from '@mui/material';
 import { ResultsModal } from './ResultsModal'; // Import the new modal component
 
@@ -40,6 +30,17 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
     const [userType, setUserType] = useState(null);
     const [userId, setUserId] = useState(null);
 
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    const handleDeleteUser = async () => {
+        try {
+            await Api.delete('/usuario/delete');
+            localStorage.removeItem('token');
+            navigate('/');
+        } catch (error) {
+            console.error('Erro ao excluir usuário:', error);
+        }
+    };
 
     // User information state
     const [userInfo, setUserInfo] = useState({
@@ -49,9 +50,6 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
         senha: '',
         novasenha: ''
     });
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     // Editable state
     const [editableUserInfo, setEditableUserInfo] = useState({ ...userInfo });
@@ -144,7 +142,6 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
                 turma: editableUserInfo.turma,
                 senha: editableUserInfo.senha,
                 novasenha: editableUserInfo.novasenha
-                // Adicione outros campos necessários
             };
 
             await Api.put('/auth/update', payload);
@@ -154,7 +151,6 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
             setIsUserModalOpen(false);
         } catch (error) {
             console.error('Erro ao atualizar perfil:', error);
-            // Opcional: mostrar mensagem de erro ao usuário
         }
     };
 
@@ -333,13 +329,22 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
             >
                 <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     Informações do Usuário
-                    <Button
-                        onClick={handleEditToggle}
-                        startIcon={<Edit size={20} />}
-                        sx={{ color: 'white' }}
-                    >
-                        {isEditing ? 'Cancelar' : 'Editar'}
-                    </Button>
+                    <Box>
+                        <Button
+                            onClick={handleEditToggle}
+                            startIcon={<Edit size={20} />}
+                            sx={{ color: 'white', mr: 1 }}
+                        >
+                            {isEditing ? 'Cancelar' : 'Editar'}
+                        </Button>
+                        <Button
+                            onClick={() => setIsDeleteDialogOpen(true)}
+                            startIcon={<Trash2 size={20} />}
+                            sx={{ color: 'red' }}
+                        >
+                            Excluir
+                        </Button>
+                    </Box>
                 </DialogTitle>
                 <DialogContent>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
@@ -500,10 +505,38 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
                     </DialogActions>
                 )}
             </Dialog>
-            
+
+            <Dialog
+                open={isDeleteDialogOpen}
+                onClose={() => setIsDeleteDialogOpen(false)}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
+                sx={{
+                    '& .MuiDialog-paper': {
+                        backgroundColor: '#1a237e',
+                        color: 'white'
+                    }
+                }}
+            >
+                <DialogTitle id="delete-dialog-title">Confirmar Exclusão</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="delete-dialog-description" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                        Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setIsDeleteDialogOpen(false)} sx={{ color: 'white' }}>
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleDeleteUser} color="error" autoFocus>
+                        Excluir
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             {/* Results Modal */}
             {userId && (
-                <ResultsModal 
+                <ResultsModal
                     open={isResultsModalOpen}
                     onClose={() => setIsResultsModalOpen(false)}
                     userId={userId}

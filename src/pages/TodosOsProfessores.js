@@ -150,25 +150,6 @@ const TodosOsProfessores = () => {
                             <Column header="Nome Completo" field="nomecompleto" />
                             <Column header="Usuário" field="nomeusuario" />
                             <Column header="Turma" field="turma" />
-                            <Column
-                                header="Ações"
-                                component={({ row }) => (
-                                    <div className={styles.actionButtons}>
-                                        <Button
-                                            variant="outline-brand"
-                                            label="Ver Detalhes"
-                                            onClick={() => handleVerDetalhes(row.id)}
-                                            className={styles.actionButton}
-                                        />
-                                        <Button
-                                            variant="destructive"
-                                            label="Deletar"
-                                            onClick={() => openDeleteConfirmation(row.id)}
-                                            className={styles.deleteButton}
-                                        />
-                                    </div>
-                                )}
-                            />
                         </Table>
 
                         <Modal

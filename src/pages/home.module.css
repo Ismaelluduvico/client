@@ -1,157 +1,228 @@
+/* Base styles for root container */
 .root {
-    min-height: 100vh;
-    min-width: calc(100% - 240px);
-    max-width: calc(100% - 240px);
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-self: flex-end;
-    background-color: #fff;
-    position: absolute;
-    right: 0;
-}
-
-.root * {
-    color: #000;
-}
-
-h1, h2, p, a {
-    font-size: 2rem;
-    color: #000;
-    margin: 0;
-    padding: 10px;
-}
-
-.quizz {
-    width: 65%;
-    display: flex;
-    flex-direction: column;
-}
-
-.quizzContent {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 5vh;
-
-}
-
-.ranking {
-    border-left: 1px solid #0C4070;
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-}
-
-.ranking div {
-    width: 100%;
-}
- 
-.quizzItem button {
-    background: #0C4070;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-    border-radius: 20px;
-}
-.quizzItem button:hover {
-    background: #0C4070;
-}
-.levelDescription {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.inicarJogo {
-    text-align: center;
-}
-
-.inicarJogo Button {
-    background: #0C4070;
-    color: #fff;
-    width: 20%;
-}
-
-.inicarJogo Button:hover{
-    background: #176cbb;
-    color: #fff;
-}
-
-.root {
+  min-height: 100vh;
+  width: 100%;
   display: flex;
-  height: 100vh;
-  background-color: #f0f4f8;
+  flex-direction: row;
+  background-color: #fff;
+  position: relative;
+  margin-left: 240px;
 }
 
+/* Typography */
+h1, h2, p, a {
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  color: #000;
+  margin: 0;
+  padding: 10px;
+}
+
+/* Quiz section */
 .quizz {
-  flex: 1;
-  padding: 2rem;
+  flex: 2;
+  min-width: 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.quizz h1 {
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 2rem;
 }
 
 .quizzContent {
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2vh;
+  padding: 0 20px;
 }
 
+/* Level description section */
 .levelDescription {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: #f9fafb;
-  border-radius: 8px;
+  text-align: center;
+  padding: 20px;
+  gap: 20px;
 }
 
 .levelDescription img {
-  max-width: 150px;
-  border-radius: 8px;
+  max-width: 200px;
+  width: 80%;
+  height: auto;
 }
 
 .levelDescription h1 {
-  font-size: 1rem;
-  color: #4a5568;
-  text-align: left;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
 }
 
+/* Start game button */
 .inicarJogo {
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  padding: 20px;
 }
 
+.inicarJogo Button {
+  background: #0C4070;
+  color: #fff;
+  width: clamp(150px, 30%, 300px);
+}
+
+.inicarJogo Button:hover {
+  background: #176cbb;
+}
+
+/* Ranking section */
 .ranking {
   flex: 1;
-  padding: 2rem;
-  background-color: #e9ecef;
-  overflow-y: auto;
+  min-width: 250px;
+  border-left: 1px solid #0C4070;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.ranking h1 {
+.ranking div {
+  width: 100%;
+}
+
+/* Quiz Modal Styles */
+.quizContent {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.questionStatement {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  margin-bottom: 30px;
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 2rem;
 }
 
-.rankingHard, 
-.rankingMedium, 
-.rankingEasy {
-  background-color: #ffffff;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-} 
+.alternativesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.alternativeButton {
+  width: 100%;
+}
+
+.alternativeButton > button {
+  width: 100% !important;
+  text-align: left;
+  white-space: normal;
+  min-height: 50px;
+  padding: 12px 15px;
+}
+
+/* Media Queries */
+
+/* Large Screens */
+@media screen and (min-width: 1200px) {
+  .root {
+      max-width: calc(100% - 240px);
+  }
+}
+
+/* Medium Screens */
+@media screen and (max-width: 1024px) {
+  .root {
+      margin-left: 0;
+      padding: 10px;
+  }
+
+  .quizz {
+      flex: 1.5;
+  }
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .root {
+      flex-direction: column;
+  }
+
+  .quizz, .ranking {
+      width: 100%;
+  }
+
+  .ranking {
+      border-left: none;
+      border-top: 1px solid #0C4070;
+      margin-top: 20px;
+  }
+
+  .levelDescription {
+      flex-direction: column;
+  }
+
+  .levelDescription img {
+      max-width: 150px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+  .root {
+      padding: 10px;
+  }
+
+  h1, h2, p, a {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      padding: 5px;
+  }
+
+  .quizzContent {
+      padding: 0 10px;
+  }
+
+  .levelDescription img {
+      max-width: 120px;
+  }
+
+  .inicarJogo Button {
+      width: 80%;
+  }
+
+  .alternativeButton > button {
+      padding: 10px;
+      font-size: 0.9rem;
+  }
+
+  .questionStatement {
+      font-size: 1rem;
+      margin-bottom: 20px;
+  }
+}
+
+/* Handle very small screens */
+@media screen and (max-width: 320px) {
+  .root {
+      padding: 5px;
+  }
+
+  .quizz, .ranking {
+      padding: 10px;
+  }
+
+  .levelDescription img {
+      max-width: 100px;
+  }
+}
+
+/* Height-based adjustments */
+@media screen and (max-height: 600px) {
+  .levelDescription {
+      gap: 10px;
+  }
+
+  .levelDescription img {
+      max-width: 100px;
+  }
+
+  .quizzContent {
+      margin-top: 1vh;
+  }
+}

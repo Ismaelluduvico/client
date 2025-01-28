@@ -88,11 +88,7 @@ const CadastroProfessor = () => {
                         type='text'
                         onChange={(e) => setNomeCompleto(e.target.value)}
                     />
-                    <div className={styles.trocarPagina}>
-                        <div className={styles.tenhoConta}>
-                            <a href='/'>Já tenho uma conta</a>
-                        </div>
-                    </div>
+                    
                     <div className={styles.button}>
                         <div className={styles.button1}>
                             <Button
