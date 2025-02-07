@@ -408,7 +408,6 @@ export const SidebarMenu = ({ isMobile }) => {
                   name="nomeusuario"
                   label="Usuário"
                   value={editableUserInfo.nomeusuario}
-                  onChange={handleUserInfoChange}
                   margin="normal"
                   variant="outlined"
                   InputLabelProps={{

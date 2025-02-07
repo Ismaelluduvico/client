@@ -352,8 +352,8 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
                             <>
                                 <TextField
                                     fullWidth
-                                    name="name"
-                                    label="Nome"
+                                    name="nomecompleto"
+                                    label="Nome Completo"
                                     value={editableUserInfo.nomecompleto}
                                     onChange={handleUserInfoChange}
                                     margin="normal"
@@ -375,10 +375,11 @@ export const SidebarMenuHomeAluno = ({ isMobile }) => {
                                 />
                                 <TextField
                                     fullWidth
+                                    style={{color: 'white'}}
                                     name="nomeusuario"
                                     label="Usuário"
                                     value={editableUserInfo.nomeusuario}
-                                    onChange={handleUserInfoChange}
+                                    //onChange={handleUserInfoChange}
                                     margin="normal"
                                     variant="outlined"
                                     InputLabelProps={{

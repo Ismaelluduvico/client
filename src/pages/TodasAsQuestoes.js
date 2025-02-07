@@ -126,6 +126,7 @@ const TodasAsQuestoes = () => {
     };
 
     const handleAlternativaChange = (index, field, value) => {
+        console.log(index, field, value);
         setEditedAlternativas(prev => {
             const updated = [...prev];
             if (field === 'certoerrado') {
@@ -346,8 +347,8 @@ const TodasAsQuestoes = () => {
                                                         options={[
                                                             { value: "true", label: 'Correta' }
                                                         ]}
-                                                        value={[alt.certoerrado ? "true" : "false"]}
-                                                        onChange={(e) => handleAlternativaChange(index, 'certoerrado', e[0] === "true")}
+                                                        value={alt.certoerrado === true ? ["true"] : []}
+                                                        onChange={(e) => handleAlternativaChange(index, 'certoerrado', e.includes("true"))}
                                                         className={styles.checkboxGroup}
                                                     />
                                                 </div>
