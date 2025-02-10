@@ -11,6 +11,11 @@ export const levels = [
   { value: 'Aleatorio', label: 'Aleatórias' }
 ];
 
+export const getLevelDisplayName = (levelValue) => {
+  const levelOption = levels.find(l => l.value === levelValue);
+  return levelOption ? levelOption.label : levelValue;
+};
+
 export const levelDetails = {
   Facil: {
     avatar: easyLevelImage,

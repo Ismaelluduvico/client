@@ -15,6 +15,11 @@
     margin-right: 2%;
 }
 
+.buscaInput{
+    margin-right: 10%;
+    margin-top: 3%;
+}
+
 .header {
     display: flex;
     justify-content: space-between;

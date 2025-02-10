@@ -56,8 +56,8 @@ a {
     display: flex;
 }
 
-.container RadioGroup {
-    color: #000000
+.container radioGroup {
+    color: #000000;
 }
 
 .button {
@@ -97,8 +97,7 @@ a {
 
 .labelStyle {
     color: #fff;
-    font-size: 14px;
-    padding: 10px;
+    font-size: 1.5rem;
 }
 
 .optionStyle {

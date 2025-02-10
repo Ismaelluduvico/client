@@ -52,7 +52,7 @@ const CadastroAssunto = () => {
                     <Input
                         labelAlignment='left'
                         id="input-component-1"
-                        label="Novo Assuno"
+                        label="Novo Assunto"
                         placeholder="Informe o Assuto"
                         className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
                         type='text'

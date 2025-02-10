@@ -88,9 +88,7 @@ const Login = () => {
 
                         />
                         <div className='trocarPagina1'>
-                            <div className='naoTenhoConta'>
                                 <a href='/cadastrousuario'>Não tenho uma conta</a>
-                            </div>
                         </div>
                     </div>
                     <div className='button3'>

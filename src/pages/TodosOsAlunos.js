@@ -125,13 +125,13 @@ const TodosOsAlunos = () => {
             <SidebarMenu isMobile={false} />
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <h1>Lista de Alunos</h1>
+                    <h1 style={{color:'#3F4954', marginLeft:'1%', marginTop:'3%'}}>LISTA DE ALUNO(S)</h1>
                     <div className={styles.searchBar}>
                         <Input
                             placeholder="Buscar por usuário ou turma"
                             value={busca}
                             onChange={(e) => setBusca(e.target.value)}
-                            className={styles.searchInput}
+                            className={styles.buscaInput}
                         />
                     </div>
                 </div>
@@ -144,7 +144,7 @@ const TodosOsAlunos = () => {
                     <>
                         <Table className={styles.table} data={alunosFiltrados} keyField="id">
                             <Column header="Nome Completo" field="nomecompleto" />
-                            <Column header="Usuario" field="nomeusuario" />
+                            <Column header="USUÁRIO" field="nomeusuario" />
                             <Column header="Turma" field="turma" />
                             <Column
                                 header="Ações"

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, Button } from 'react-rainbow-components';
 import styles from './home.module.css';
 import Api from '../axios/Api';
-import { fetchShuffledQuestions } from './homeUtils';
+import { fetchShuffledQuestions, getLevelDisplayName } from './homeUtils';
 
 const QuizModal = ({ isOpen, onClose, level }) => {
   const MAX_QUESTIONS = 15; // Set maximum questions to 15
@@ -283,7 +283,7 @@ const QuizModal = ({ isOpen, onClose, level }) => {
       <Modal
         isOpen={isOpen}
         onRequestClose={onClose}
-        title={`Quiz de História - Nível ${level}`}
+        title={`Quiz de História - Nível ${getLevelDisplayName(level)}`}
         size="large"
         className={styles.quizModal}
       >

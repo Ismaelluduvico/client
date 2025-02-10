@@ -10,6 +10,15 @@
     right: 0;
 }
 
+.buscaContainer{
+    color:#fff;
+    width:35%;
+}
+.buscaInput{
+    margin-right: 30%;
+    margin-top: 5%;
+}
+
 .table{
     margin-left: 10%;
     min-width: 80%;

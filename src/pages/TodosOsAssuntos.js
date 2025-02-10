@@ -131,13 +131,13 @@ const TodosOsAssuntos = () => {
             <SidebarMenu isMobile={false} />
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <h1>Lista de Assuntos</h1>
-                    <div className={styles.searchBar}>
+                    <h1 style={{color:'#3F4954', marginLeft:'10%', marginTop:'3%'}}>ASSUNTOS</h1>
+                    <div className={styles.buscaContainer}>
                         <Input
                             placeholder="Buscar por título"
                             value={busca}
                             onChange={(e) => setBusca(e.target.value)}
-                            className={styles.searchInput}
+                            className={styles.buscaInput}
                         />
                     </div>
                 </div>

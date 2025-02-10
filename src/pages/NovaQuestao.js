@@ -169,18 +169,18 @@ const NovaQuestao = () => {
                             style={{ marginBottom: "5%", width: "100%" }}
                         />
                     ))}
-                    <div className={styles.radiogroup}>
+                    <div className={styles.radioGroup}>
                         <RadioGroup
                             id="radio-group-component-2"
                             options={alternativas.map((_, index) => ({
                                 value: index,
-                                label: <div >Alternativa {index + 1}</div>
+                                label: <div style={{color:'white'}}>Alternativa {index + 1}</div>
                             }))}
                             value={alternativas.findIndex(i => i?.certoerrado)}
                             onChange={(e) => handleCorretoChange(e.target.value)}
                             label={<p className={styles.labelStyle}>Das alternativas acima, selecione a correta</p>}
                             orientation="horizontal"
-                            style={{ marginTop: "1%", marginLeft: "0%", marginBottom: "5%" }}
+                            style={{ marginTop: "1%", marginLeft: "0%", marginBottom: "5%"}}
                         />
                     </div>
                     <div className={styles.button}>

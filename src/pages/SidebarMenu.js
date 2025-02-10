@@ -326,7 +326,7 @@ export const SidebarMenu = ({ isMobile }) => {
           }
         }}
       >
-        <DialogTitle id="logout-dialog-title">Confirmar Logout</DialogTitle>
+        <DialogTitle id="logout-dialog-title" style={{color:'white'}}>Confirmar Logout</DialogTitle>
         <DialogContent>
           <DialogContentText id="logout-dialog-description" sx={{ color: 'rgba(255,255,255,0.7)' }}>
             Tem certeza de que deseja sair do sistema?
@@ -356,8 +356,10 @@ export const SidebarMenu = ({ isMobile }) => {
         }}
       >
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          Informações do Usuário
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <h3 style={{color:'white', marginLeft:'15%'}}>Informações do Usuário</h3>
+        </DialogTitle>
+        <DialogContent>
+        <Box sx={{ display: 'flex', gap: 1, ml: 11 }}>
             <Button
               onClick={handleEditToggle}
               startIcon={<Edit size={20} />}
@@ -375,8 +377,6 @@ export const SidebarMenu = ({ isMobile }) => {
               </Button>
             )}
           </Box>
-        </DialogTitle>
-        <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
             {isEditing ? (
               <>
