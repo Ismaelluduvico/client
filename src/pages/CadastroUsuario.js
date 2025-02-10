@@ -50,7 +50,7 @@ const CadastroUsuario = () => {
             />}
             <div className={styles.form}>
                 <h1 className={styles.usuario1}>NOVA CONTA</h1>
-                <form>
+                <form style={{width: "90%", height: "90%"}}>
 
                     <Input
                         labelAlignment='left'
